@@ -3,6 +3,10 @@
 Visualizes the Bitstamp BTC/USD Orderbook
 
 
+#### todo:
+
+sum up all the trades at the same price in the same bar / element
+
 ---
 
 # mkv Opal setup (no sprockets, using guard)
