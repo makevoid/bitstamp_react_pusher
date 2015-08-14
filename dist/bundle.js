@@ -4,7 +4,7 @@
   var self = Opal.top, $scope = Opal, nil = Opal.nil, $breaker = Opal.breaker, $slice = Opal.slice, $module = Opal.module, $klass = Opal.klass, $hash2 = Opal.hash2, $gvars = Opal.gvars;
   if ($gvars.document == null) $gvars.document = nil;
 
-  Opal.add_stubs(['$new', '$on', '$puts', '$==', '$select', '$>', '$map', '$to_f', '$empty?', '$bids=', '$sort_by', '$+', '$bids', '$asks=', '$asks', '$include', '$round', '$[]', '$params', '$div', '$after_mount', '$define_state', '$timer=', '$h3', '$p', '$present', '$each_with_index', '$render', '$create_element', '$to_n', '$body']);
+  Opal.add_stubs(['$new', '$on', '$puts', '$==', '$select', '$>', '$map', '$to_f', '$empty?', '$bids=', '$sort_by', '$+', '$bids', '$asks=', '$asks', '$include', '$round', '$[]', '$params', '$div', '$after_mount', '$define_state', '$timer=', '$h3', '$p', '$section', '$present', '$each_with_index', '$render', '$create_element', '$to_n', '$body']);
   console.log("loading app environment");
   self.$require("browser");
   (function($base) {
@@ -148,24 +148,28 @@ if (price == null) price = nil;if (volume == null) volume = nil;
             return ($a = ($g = self).$p, $a.$$p = (TMP_25 = function(){var self = TMP_25.$$s || this;
 
             return "[  ] invert"}, TMP_25.$$s = self, TMP_25), $a).call($g);}, TMP_19.$$s = self, TMP_19), $a).call($b, $hash2(["className"], {"className": "theme colors"}))}, TMP_18.$$s = self, TMP_18), $a).call($c, $hash2(["className"], {"className": "right_panel"}));
-        return ($a = ($d = self).$div, $a.$$p = (TMP_26 = function(){var self = TMP_26.$$s || this, $a, $b, TMP_27, $c, TMP_28, $d, TMP_29, $e, TMP_30;
+        return ($a = ($d = self).$div, $a.$$p = (TMP_26 = function(){var self = TMP_26.$$s || this, $a, $b, TMP_27, $c, TMP_30;
 
-        ($a = ($b = self).$h3, $a.$$p = (TMP_27 = function(){var self = TMP_27.$$s || this;
+        ($a = ($b = self).$section, $a.$$p = (TMP_27 = function(){var self = TMP_27.$$s || this, $a, $b, TMP_28, $c, TMP_29;
 
-          return "Bids"}, TMP_27.$$s = self, TMP_27), $a).call($b);
-          ($a = ($c = self.$bids().$each_with_index()).$map, $a.$$p = (TMP_28 = function(trade, idx){var self = TMP_28.$$s || this, $a, price = nil, volume = nil, comp = nil;
+          ($a = ($b = self).$h3, $a.$$p = (TMP_28 = function(){var self = TMP_28.$$s || this;
+
+            return "Bids"}, TMP_28.$$s = self, TMP_28), $a).call($b);
+            return ($a = ($c = self.$bids().$each_with_index()).$map, $a.$$p = (TMP_29 = function(trade, idx){var self = TMP_29.$$s || this, $a, price = nil, volume = nil, comp = nil;
 if (trade == null) trade = nil;if (idx == null) idx = nil;
-          $a = Opal.to_ary(trade), price = ($a[0] == null ? nil : $a[0]), volume = ($a[1] == null ? nil : $a[1]);
-            comp = self.$present($scope.get('Transaction'), $hash2(["price", "volume", "key"], {"price": price, "volume": volume, "key": "bid-" + (idx)}));
-            return comp;}, TMP_28.$$s = self, TMP_28), $a).call($c);
-          ($a = ($d = self).$h3, $a.$$p = (TMP_29 = function(){var self = TMP_29.$$s || this;
+            $a = Opal.to_ary(trade), price = ($a[0] == null ? nil : $a[0]), volume = ($a[1] == null ? nil : $a[1]);
+              comp = self.$present($scope.get('Transaction'), $hash2(["price", "volume", "key"], {"price": price, "volume": volume, "key": "bid-" + (idx)}));
+              return comp;}, TMP_29.$$s = self, TMP_29), $a).call($c);}, TMP_27.$$s = self, TMP_27), $a).call($b, $hash2(["className"], {"className": "bids"}));
+          return ($a = ($c = self).$section, $a.$$p = (TMP_30 = function(){var self = TMP_30.$$s || this, $a, $b, TMP_31, $c, TMP_32;
 
-          return "Asks"}, TMP_29.$$s = self, TMP_29), $a).call($d);
-          return ($a = ($e = self.$asks().$each_with_index()).$map, $a.$$p = (TMP_30 = function(trade, idx){var self = TMP_30.$$s || this, $a, price = nil, volume = nil, comp = nil;
+          ($a = ($b = self).$h3, $a.$$p = (TMP_31 = function(){var self = TMP_31.$$s || this;
+
+            return "Asks"}, TMP_31.$$s = self, TMP_31), $a).call($b);
+            return ($a = ($c = self.$asks().$each_with_index()).$map, $a.$$p = (TMP_32 = function(trade, idx){var self = TMP_32.$$s || this, $a, price = nil, volume = nil, comp = nil;
 if (trade == null) trade = nil;if (idx == null) idx = nil;
-          $a = Opal.to_ary(trade), price = ($a[0] == null ? nil : $a[0]), volume = ($a[1] == null ? nil : $a[1]);
-            comp = self.$present($scope.get('Transaction'), $hash2(["price", "volume", "key"], {"price": price, "volume": volume, "key": "ask-" + (idx)}));
-            return comp;}, TMP_30.$$s = self, TMP_30), $a).call($e);}, TMP_26.$$s = self, TMP_26), $a).call($d, $hash2(["className"], {"className": "tx_list"}));}, TMP_14.$$s = self, TMP_14), $a).call($b);
+            $a = Opal.to_ary(trade), price = ($a[0] == null ? nil : $a[0]), volume = ($a[1] == null ? nil : $a[1]);
+              comp = self.$present($scope.get('Transaction'), $hash2(["price", "volume", "key"], {"price": price, "volume": volume, "key": "ask-" + (idx)}));
+              return comp;}, TMP_32.$$s = self, TMP_32), $a).call($c);}, TMP_30.$$s = self, TMP_30), $a).call($c, $hash2(["className"], {"className": "asks"}));}, TMP_26.$$s = self, TMP_26), $a).call($d, $hash2(["className"], {"className": "tx_list"}));}, TMP_14.$$s = self, TMP_14), $a).call($b);
     }, nil) && 'render';
   })(self, null);
   console.log("loading app.rb");

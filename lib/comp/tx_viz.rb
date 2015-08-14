@@ -31,17 +31,21 @@ class TxViz
         end
       end
       div className: "tx_list" do
-        h3 { "Bids" }
-        self.bids.each_with_index.map do |trade, idx|
-          price, volume = trade
-          comp = present Transaction, price: price, volume: volume, key: "bid-#{idx}"
-          comp
+        section className: "bids" do
+          h3 { "Bids" }
+          self.bids.each_with_index.map do |trade, idx|
+            price, volume = trade
+            comp = present Transaction, price: price, volume: volume, key: "bid-#{idx}"
+            comp
+          end
         end
-        h3 { "Asks" }
-        self.asks.each_with_index.map do |trade, idx|
-          price, volume = trade
-          comp = present Transaction, price: price, volume: volume, key: "ask-#{idx}"
-          comp
+        section className: "asks" do
+          h3 { "Asks" }
+          self.asks.each_with_index.map do |trade, idx|
+            price, volume = trade
+            comp = present Transaction, price: price, volume: volume, key: "ask-#{idx}"
+            comp
+          end
         end
       end
     end
