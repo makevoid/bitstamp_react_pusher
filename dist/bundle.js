@@ -4,7 +4,7 @@
   var self = Opal.top, $scope = Opal, nil = Opal.nil, $breaker = Opal.breaker, $slice = Opal.slice, $module = Opal.module, $klass = Opal.klass, $hash2 = Opal.hash2, $gvars = Opal.gvars;
   if ($gvars.document == null) $gvars.document = nil;
 
-  Opal.add_stubs(['$new', '$on', '$puts', '$==', '$select', '$>', '$map', '$to_f', '$empty?', '$bids=', '$sort_by', '$+', '$bids', '$asks=', '$asks', '$include', '$round', '$[]', '$params', '$div', '$after_mount', '$define_state', '$timer=', '$h3', '$p', '$section', '$present', '$each_with_index', '$render', '$create_element', '$to_n', '$body']);
+  Opal.add_stubs(['$new', '$on', '$puts', '$==', '$select', '$>', '$map', '$to_f', '$empty?', '$bids=', '$sort_by', '$-@', '$+', '$bids', '$asks=', '$asks', '$include', '$round', '$[]', '$params', '$div', '$after_mount', '$define_state', '$timer=', '$h3', '$p', '$section', '$present', '$each_with_index', '$render', '$create_element', '$to_n', '$body']);
   console.log("loading app environment");
   self.$require("browser");
   (function($base) {
@@ -44,7 +44,7 @@ if (price == null) price = nil;if (volume == null) volume = nil;
               } else {
               (($a = [($g = ($h = (tx_viz.$bids()['$+'](bids))).$sort_by, $g.$$p = (TMP_8 = function(price, volume){var self = TMP_8.$$s || this;
 if (price == null) price = nil;if (volume == null) volume = nil;
-              return price}, TMP_8.$$s = self, TMP_8), $g).call($h)]), $e = tx_viz, $e['$bids='].apply($e, $a), $a[$a.length-1])
+              return price['$-@']()}, TMP_8.$$s = self, TMP_8), $g).call($h)]), $e = tx_viz, $e['$bids='].apply($e, $a), $a[$a.length-1])
             };
             if ((($a = asks['$empty?']()) !== nil && (!$a.$$is_boolean || $a == true))) {
               return nil

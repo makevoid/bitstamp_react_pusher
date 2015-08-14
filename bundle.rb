@@ -29,8 +29,8 @@ module TxFetcher
           # `console.log('bids', bids)`
           # `console.log('asks', asks)`
 
-          tx_viz.bids = (tx_viz.bids + bids).sort_by{ |price, volume| price } unless bids.empty?
-          tx_viz.asks = (tx_viz.asks + asks).sort_by{ |price, volume| price } unless asks.empty?
+          tx_viz.bids = (tx_viz.bids + bids).sort_by{ |price, volume| -price } unless bids.empty?
+          tx_viz.asks = (tx_viz.asks + asks).sort_by{ |price, volume| price  } unless asks.empty?
 
           # tx_viz.bids.push bids
 
