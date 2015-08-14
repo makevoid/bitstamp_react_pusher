@@ -1,20 +1,8 @@
 class Transaction
   include React::Component
 
-  def tx_url(tx_hash)
-    "https://blockchain.info/tx/#{tx_hash}"
-  end
-
   def render
-    element = a href: tx_url(params[:tx][:hash]) do
-      "#{params[:tx][:value]} BTC"
-      # TODO:
-      #
-      # n. output
-      # type (apply color)
-    end
-
-    width = params[:tx][:value].round
+    width = params[:volume].round 1
     width = "#{width}%"
     `
       var divStyle = {
@@ -22,7 +10,7 @@ class Transaction
       }
     `
     div style: `divStyle` do
-      element
+      "#{params[:price]} USD - #{params[:volume]} BTC"
     end
   end
 end

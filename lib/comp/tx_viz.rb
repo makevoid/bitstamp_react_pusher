@@ -5,8 +5,8 @@ class TxViz
   after_mount :reset_timer
 
   define_state(:timer)        { `new Date()` }
-  define_state(:transactions) { [] }
-  define_state(:total_value)  { 0 }
+  define_state(:bids) { [] }
+  define_state(:asks) { [] }
 
   def reset_timer
     self.timer = `new Date()`
@@ -15,19 +15,12 @@ class TxViz
   def render
     div do
       div className: "header" do
-        h3 { "Transactions" }
+        h3 { "Bitstamp Orderbook live trades" }
         p className: "mini" do
-          "realtime transactions visualizer, bitcoin network - opal, react, css3, websockets, bitcoin, blockchain, blockchain.com, bitcoind"
+          "realtime orderbook trades visualizer, bitstamp - powered by opal, react, css3, websockets"
         end
       end
       div className: "right_panel" do
-        div className: "watch_address" do
-          label htmlFor: "watch_address" do
-            "Address to watch: "
-          end
-          input id: "watch_address", placeholder: "1address..."
-
-        end
         div className: "theme colors" do
           p { "theme colors" }
           p { "[  ] light" }
@@ -35,25 +28,19 @@ class TxViz
           p { "[  ] dark" }
           p { "[  ] desaturated" }
           p { "[  ] invert" }
-          p { "display" }
-          p { "[ btc / mbtc / bits / satoshis ] unit" }
         end
-        div className: "filters" do
-          p { "filters" }
-          p { "[ x ] small transactions (<1 BTC)" }
-          p { "[  ] "  }
-        end
-      end
-      div className: "status" do
-        elapsed = `new Date()` - self.timer
-        minutes = (elapsed / 60).floor
-        seconds = elapsed - minutes*60
-        btc_min = self.total_value / elapsed
-        "#{self.total_value.floor} BTC transacted in #{minutes} minutes and #{seconds.floor} seconds (#{btc_min.round(1)} BTC/minute)"
       end
       div className: "tx_list" do
-        self.transactions.each_with_index.map do |tx, idx|
-          comp = present Transaction, tx: tx, key: tx[:hash] # TODO: ref
+        h3 { "Bids" }
+        self.bids.each_with_index.map do |trade, idx|
+          price, volume = trade
+          comp = present Transaction, price: price, volume: volume, key: "bid-#{idx}"
+          comp
+        end
+        h3 { "Asks" }
+        self.asks.each_with_index.map do |trade, idx|
+          price, volume = trade
+          comp = present Transaction, price: price, volume: volume, key: "ask-#{idx}"
           comp
         end
       end

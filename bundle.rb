@@ -3,32 +3,61 @@
 `self.$require("browser");`
 
 module TxFetcher
+  WS_ENDPOINT = 'wss://ws.pusherapp.com/app/de504dc5763aeef9ff52?protocol=7&client=js&version=2.1.6&flash=false'
+
   def load_transactions
     tx_viz = self
-    Browser::Socket.new 'wss://ws.blockchain.info/inv' do
+    Browser::Socket.new WS_ENDPOINT do
       on :open do
-        puts '{"op":"unconfirmed_sub"}'
+        puts '{ "event": "pusher:subscribe", "data": { "channel": "diff_order_book" } }'
       end
 
       on :message do |e|
-        data  = `JSON.parse(e.native.data).x`
-        out   = `data.out`
-        hash  = `data.hash`
-        value = out.map{ |o| `o.value` / 10 ** 8 }.inject :+
-        value = value.round 8
-        tx    = { value: value, hash: hash }
+        data = `JSON.parse(e.native.data)`
 
-        comp_num = 100
-        tx_gone = tx_viz.transactions[comp_num+1]
+        if `data.event` == "data"
 
-        if tx_gone
-          reactid = ".0.3.$#{tx_gone[:hash]}"
-          elem_gone = `document.querySelector("div[data-reactid='"+reactid+"']")`
-          `React.unmountComponentAtNode(elem_gone)`
+          data  = `JSON.parse(data.data)`
+
+
+          bids = `data.bids`
+          asks = `data.asks`
+
+          bids = bids.map{ |price, volume| [price.to_f, volume.to_f] }.select{ |price, volume| volume > 0 }
+          asks = asks.map{ |price, volume| [price.to_f, volume.to_f] }.select{ |price, volume| volume > 0 }
+
+          # `console.log('bids', bids)`
+          # `console.log('asks', asks)`
+
+
+          tx_viz.bids = (tx_viz.bids + bids).sort_by{ |price, volume| price } unless bids.empty?
+          tx_viz.asks = (tx_viz.asks + asks).sort_by{ |price, volume| price } unless asks.empty?
+
+
+          # tx_viz.bids.push bids
+
+
+          # data  = `JSON.parse(e.native.data).x`
+          # out   = `data.out`
+          # hash  = `data.hash`
+          # value = out.map{ |o| `o.value` / 10 ** 8 }.inject :+
+          # value = value.round 8
+          # tx    = { value: value, hash: hash }
+          #
+          # comp_num = 100
+          # tx_gone = tx_viz.transactions[comp_num+1]
+          #
+          # if tx_gone
+          #   # TODO: look at ref
+          #   reactid = ".0.3.$#{tx_gone[:hash]}"
+          #   # React.findDOMNode
+          #   elem_gone = `document.querySelector("div[data-reactid='"+reactid+"']")`
+          #   `React.unmountComponentAtNode(elem_gone)`
+          # end
+          # # tx_viz.transactions.push tx
+          # tx_viz.transactions = [tx] + tx_viz.transactions[0..comp_num]
+          # tx_viz.total_value  = tx_viz.total_value + value
         end
-
-        tx_viz.transactions = [tx] + tx_viz.transactions[0..comp_num]
-        tx_viz.total_value  = tx_viz.total_value + value
       end
     end
   end
@@ -37,20 +66,8 @@ end
 class Transaction
   include React::Component
 
-  def tx_url(tx_hash)
-    "https://blockchain.info/tx/#{tx_hash}"
-  end
-
   def render
-    element = a href: tx_url(params[:tx][:hash]) do
-      "#{params[:tx][:value]} BTC"
-      # TODO:
-      #
-      # n. output
-      # type (apply color)
-    end
-
-    width = params[:tx][:value].round
+    width = params[:volume].round 1
     width = "#{width}%"
     `
       var divStyle = {
@@ -58,7 +75,7 @@ class Transaction
       }
     `
     div style: `divStyle` do
-      element
+      "#{params[:price]} USD - #{params[:volume]} BTC"
     end
   end
 end
@@ -70,8 +87,8 @@ class TxViz
   after_mount :reset_timer
 
   define_state(:timer)        { `new Date()` }
-  define_state(:transactions) { [] }
-  define_state(:total_value)  { 0 }
+  define_state(:bids) { [] }
+  define_state(:asks) { [] }
 
   def reset_timer
     self.timer = `new Date()`
@@ -80,19 +97,12 @@ class TxViz
   def render
     div do
       div className: "header" do
-        h3 { "Transactions" }
+        h3 { "Bitstamp Orderbook live trades" }
         p className: "mini" do
-          "realtime transactions visualizer, bitcoin network - opal, react, css3, websockets, bitcoin, blockchain, blockchain.com, bitcoind"
+          "realtime orderbook trades visualizer, bitstamp - powered by opal, react, css3, websockets"
         end
       end
       div className: "right_panel" do
-        div className: "watch_address" do
-          label htmlFor: "watch_address" do
-            "Address to watch: "
-          end
-          input id: "watch_address", placeholder: "1address..."
-
-        end
         div className: "theme colors" do
           p { "theme colors" }
           p { "[  ] light" }
@@ -100,25 +110,19 @@ class TxViz
           p { "[  ] dark" }
           p { "[  ] desaturated" }
           p { "[  ] invert" }
-          p { "display" }
-          p { "[ btc / mbtc / bits / satoshis ] unit" }
         end
-        div className: "filters" do
-          p { "filters" }
-          p { "[ x ] small transactions (<1 BTC)" }
-          p { "[  ] "  }
-        end
-      end
-      div className: "status" do
-        elapsed = `new Date()` - self.timer
-        minutes = (elapsed / 60).floor
-        seconds = elapsed - minutes*60
-        btc_min = self.total_value / elapsed
-        "#{self.total_value.floor} BTC transacted in #{minutes} minutes and #{seconds.floor} seconds (#{btc_min.round(1)} BTC/minute)"
       end
       div className: "tx_list" do
-        self.transactions.each_with_index.map do |tx, idx|
-          comp = present Transaction, tx: tx, key: tx[:hash]
+        h3 { "Bids" }
+        self.bids.each_with_index.map do |trade, idx|
+          price, volume = trade
+          comp = present Transaction, price: price, volume: volume, key: "bid-#{idx}"
+          comp
+        end
+        h3 { "Asks" }
+        self.asks.each_with_index.map do |trade, idx|
+          price, volume = trade
+          comp = present Transaction, price: price, volume: volume, key: "ask-#{idx}"
           comp
         end
       end

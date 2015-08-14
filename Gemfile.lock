@@ -65,7 +65,7 @@ DEPENDENCIES
   guard-concat
   guard-sass
   guard-shell
-  opal (~> 0.7.0)
+  opal (~> 0.7.2)
 
 BUNDLED WITH
    1.10.4

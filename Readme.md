@@ -34,6 +34,13 @@ launch guard:
 
 modify app.rb, save and refresh the browser
 
+
+---
+
+you can also run everything with a simple command (experimental)
+
+    rake
+
 ---
 
 #### extra infos:
