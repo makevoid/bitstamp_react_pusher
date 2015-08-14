@@ -1,7 +1,6 @@
-# BTC Transactions Viz (visualizer)
+# Bitstamp React Pusher (websockets) Orderbook Visualization
 
-Visualizes the BTC transactions - current data from blockchain.info (websockets API) [ ws:// | wss:// ]
-- next version will support bitcoind
+Visualizes the Bitstamp BTC/USD Orderbook
 
 
 ---
