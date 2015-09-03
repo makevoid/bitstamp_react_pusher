@@ -1,0 +1,48 @@
+$fg: #121
+$bg: #dce
+$bg2: #fff
+
+html, body, #container
+  width: 100%
+  height: 100%
+  background: linear-gradient(30deg, $bg2, $bg)
+  color: $fg
+
+a
+  text-decoration: none
+
+h3
+  margin: 8px 0
+
+.bids, .asks
+  float: left
+  width: 45%
+
+.bids
+
+.asks
+
+.tx_list
+  div
+    background: rgba(50, 50, 50, 0.15)
+    max-width: 70%
+    padding: 5px 10px
+    border-radius: 5px
+    margin-bottom: 7px
+
+    white-space: nowrap
+    color: $fg
+  div:hover
+    color: $fg
+    a
+      color: $fg - #111
+
+.status
+  margin-bottom: 8px
+
+.right_panel
+  font-size: 80%
+  float: right
+
+.mini
+  font-size: 70%

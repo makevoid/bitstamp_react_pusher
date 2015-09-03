@@ -20,18 +20,18 @@ class TxViz
           "realtime orderbook trades visualizer, bitstamp - powered by opal, react, css3, websockets"
         end
       end
-      div className: "right_panel" do
-        div className: "theme colors" do
-          p { "theme colors" }
-          p { "[  ] light" }
-          p { "[ x ] color" }
-          p { "[  ] dark" }
-          p { "[  ] desaturated" }
-          p { "[  ] invert" }
-        end
-      end
-      div className: "tx_list" do
-        section className: "bids" do
+      # div className: "right_panel" do
+      #   div className: "theme colors" do
+      #     p { "theme colors" }
+      #     p { "[  ] light" }
+      #     p { "[ x ] color" }
+      #     p { "[  ] dark" }
+      #     p { "[  ] desaturated" }
+      #     p { "[  ] invert" }
+      #   end
+      # end
+      div className: "tx_list row" do
+        section className: "bids three columns" do
           h3 { "Bids" }
           self.bids.each_with_index.map do |trade, idx|
             price, volume = trade
@@ -39,7 +39,7 @@ class TxViz
             comp
           end
         end
-        section className: "asks" do
+        section className: "asks three columns" do
           h3 { "Asks" }
           self.asks.each_with_index.map do |trade, idx|
             price, volume = trade
