@@ -1,8 +1,21 @@
 # see this file (the demo app) running: http://bitstamp-react-pusher.mkvd.net
 
-`console.log("loading app environment")`
+class Log
+  def self.l(message)
+    `console.log("#{message}")`
+  end
+end
 
-`self.$require("browser");`
+class Require
+  def self.r(package)
+    `self.$require("#{package}");`
+  end
+end
+
+Log.l "antani started!"
+
+Require.r "browser"
+
 
 module TxFetcher
   WS_ENDPOINT = 'wss://ws.pusherapp.com/app/de504dc5763aeef9ff52?protocol=7&client=js&version=2.1.6&flash=false'
@@ -20,7 +33,6 @@ module TxFetcher
         if `data.event` == "data"
 
           data  = `JSON.parse(data.data)`
-
 
           bids = `data.bids`
           asks = `data.asks`
@@ -81,30 +93,7 @@ class TxViz
           "realtime orderbook trades visualizer, bitstamp - powered by opal, react, css3, websockets"
         end
       end
-      # div className: "right_panel" do
-      #   div className: "theme colors" do
-      #     # implementing this will be easy
-      #     # <StyleTag id="antani"> component
-      #     # <StyleTag id="sblinda"> component
-      #     # <ThemeSwitcher>
-      #     #   <Switch id="antani">
-      #     #   <Switch id="sblinda">
-      #     #
-      #     #
-      #     # <Switches ids="antani, sblinda">
-      #     #   <Styles>
-      #     #   <ThemeSwitcher>
-      #     #     <Switch>
-      #     #
-      #     #
-      #     p { "theme colors" }
-      #     p { "[  ] light" }
-      #     p { "[ x ] color" }
-      #     p { "[  ] dark" }
-      #     p { "[  ] desaturated" }
-      #     p { "[  ] invert" }
-      #   end
-      # end
+
       div className: "tx_list row" do
         section className: "bids three columns" do
           h3 { "Bids" }
